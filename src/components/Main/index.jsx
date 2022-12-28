@@ -11,9 +11,13 @@ export function Main(){
     const [ idEstimate, setIdEstimate ] = useState(Date.now())
     
     const [ items, setItems ] = useState([])
-
+    const [ discount, setDiscount ] = useState(0)
+    const [ totalValue, setTotalValue ] = useState(0)
     const [ editingItem, setEditingItem ] = useState({})
-    const data = {id:'231321', client:'Empresa A', date:'2022-12-10'}
+    const [ estimateData, setEstimateData ] = useState({client:'', date:''})
+
+
+    // const data = {id:'231321', client:'Empresa A', date:'2022-12-10'}
 
 
     async function addItem(){
@@ -50,21 +54,39 @@ export function Main(){
 
     async function generateFile(){
 
-        generatePDF(data,items)
+        generatePDF({...estimateData, id:idEstimate, totalValue:totalValue, discount:discount},items)
 
     }
+
+    async function getTotalValue(){
+
+        let tempTotalValue = 0;
+
+        items.map(item=>{
+            const itemTotalValue = item.qtd*item.value
+            tempTotalValue += itemTotalValue
+        })
+        
+        setTotalValue(tempTotalValue-discount)
+    }
+
+    useEffect(()=>{
+
+        getTotalValue()
+
+    },[items, discount])
 
     return(
         <Container>
             <Page>
                 <h2>Orçamento: {idEstimate}</h2>
                 <div>
-                    <input className="w50" type="date" />
-                    <input className="w50" type="text" placeholder="Nome do cliente" />
+                    <input className="w50" type="date" onChange={(e)=>setEstimateData({...estimateData, date:e.target.value})}  />
+                    <input className="w50" type="text" placeholder="Nome do cliente" onChange={(e)=>setEstimateData({...estimateData, client:e.target.value})}  />
                 </div>
                 <ItemBox>
                     <h5>Items</h5>
-                    <p onClick={generateFile}>Gerar</p>
+                    
                     <NewItem>
                         <span>
                             <p>Nome do item</p>
@@ -98,7 +120,7 @@ export function Main(){
                                         <strong>{item.name}</strong>
                                         <span>
                                             <p>{item.qtd}</p>
-                                            <p>{item.value}</p>
+                                            <p>R$ {item.value}</p>
                                         </span>
                                     </div>
                                     <FiTrash onClick={()=>removeItem(item.name, item.id)} />
@@ -107,6 +129,17 @@ export function Main(){
                         })
                     }
                 </ItemBox>
+                {
+                    items.length > 0
+                    ?<>
+                        <h3>Desconto: <input value={discount} onChange={(e)=>setDiscount(e.target.value)} type="number" /></h3>
+                        <div className="footer">
+                            <h3>Total: R$ {totalValue}</h3>
+                            <button className="buttonDefault" onClick={generateFile}>Gerar PDF</button>
+                        </div>
+                    </>
+                    :null
+                }
             </Page>
         </Container>
     )

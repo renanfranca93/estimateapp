@@ -13,9 +13,55 @@ export const Container = styled.div`
 
 export const Page = styled.div`
 
+    @media only screen and (max-width: 720px)  {
+        width: 100%;
+        margin-top:0;
+        border-radius: 0;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
     .w50{
         width: 50%;
         margin-right: 1rem;
+
+        @media only screen and (max-width: 720px)  {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+
+    .footer{
+        margin-top: 1rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+    }
+
+    .buttonDefault{
+            margin-top: 1rem;
+            width: 10rem;
+            height: 3rem;
+            border: none;
+            border-radius:1.5rem ;
+            color:#f5f5f5;
+            background: grey;
+            cursor: pointer;
+            transition: .5s all;
+
+            &:hover{
+                
+                box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+                transition: .5s all;
+            }
+
+            @media only screen and (max-width: 720px)  {
+                width: 100%;
+                margin-top: .5rem;
+                
+            }
     }
 
     width: 75%;
@@ -144,11 +190,15 @@ export const ItemOnList = styled.div`
 
 
         @media only screen and (max-width: 720px)  {
+            height: 3rem;
+            border-radius: 1.5rem;
             div{
                 width: 100%;
+                
                 span{
                     display: flex;
                     width: 100%;
+                    
                     justify-content: space-between;
                 }
             }
