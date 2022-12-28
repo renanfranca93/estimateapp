@@ -41,19 +41,19 @@ const generatePDF = (data, items) => {
 
   doc.setFont('helvetica', 'bold');
   doc.text("Orçamento: ", 14, 44);
-  doc.setFont('helvetica', 'regular');
+  doc.setFont('helvetica', 'normal');
   doc.text(""+data.id, 40, 44);
   doc.setFont('helvetica', 'bold');
   doc.text("Data: ", 100, 44);
-  doc.setFont('helvetica', 'regular');
+  doc.setFont('helvetica', 'normal');
   doc.text(""+format(new Date(data.date), "dd/MM/yyyy"), 115, 44);
   doc.setFont('helvetica', 'bold');
   doc.text("Cliente: ", 14, 51);
-  doc.setFont('helvetica', 'regular');
+  doc.setFont('helvetica', 'normal');
   doc.text(""+data.client, 40, 51);
   doc.setFont('helvetica', 'bold');
   doc.text("Itens", 14, 66);
-  doc.setFont('helvetica', 'regular');
+  doc.setFont('helvetica', 'normal');
   // we define the name of our PDF file.
   doc.autoTable(tableColumn, tableRows, { startY: 70, headStyles :{fillColor : [66,110,181]}});
 

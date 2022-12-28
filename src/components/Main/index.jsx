@@ -16,10 +16,6 @@ export function Main(){
     const [ editingItem, setEditingItem ] = useState({})
     const [ estimateData, setEstimateData ] = useState({client:'', date:''})
 
-
-    // const data = {id:'231321', client:'Empresa A', date:'2022-12-10'}
-
-
     async function addItem(){
         if(editingItem.name === ''){
             window.alert("Preencha o nome do item")
@@ -54,7 +50,15 @@ export function Main(){
 
     async function generateFile(){
 
-        generatePDF({...estimateData, id:idEstimate, totalValue:totalValue, discount:discount},items)
+        generatePDF(
+                    {   client:estimateData.client, 
+                        date:estimateData.date,
+                        // ...estimateData,
+                        id:idEstimate, 
+                        totalValue:totalValue, 
+                        discount:discount
+                    }
+                    ,items)
 
     }
 
@@ -81,8 +85,8 @@ export function Main(){
             <Page>
                 <h2>Orçamento: {idEstimate}</h2>
                 <div>
-                    <input className="w50" type="date" onChange={(e)=>setEstimateData({...estimateData, date:e.target.value})}  />
-                    <input className="w50" type="text" placeholder="Nome do cliente" onChange={(e)=>setEstimateData({...estimateData, client:e.target.value})}  />
+                    <input className="w50" type="date" onChange={(e)=>setEstimateData({client:estimateData.client, date:e.target.value})}  />
+                    <input className="w50" type="text" placeholder="Nome do cliente" onChange={(e)=>setEstimateData({date:estimateData.date, client:e.target.value})}  />
                 </div>
                 <ItemBox>
                     <h5>Items</h5>
