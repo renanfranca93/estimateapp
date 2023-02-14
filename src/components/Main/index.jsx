@@ -3,6 +3,8 @@ import { Container, ItemBox, ItemOnList, NewItem, Page } from "./styles"
 import { FiTrash } from "react-icons/fi"
 import { v4 as uuidv4 } from 'uuid';
 
+import API from '../../services/api'
+
 import generatePDF from "../../services/reportGenerator";
 
 
@@ -15,6 +17,18 @@ export function Main(){
     const [ totalValue, setTotalValue ] = useState(0)
     const [ editingItem, setEditingItem ] = useState({})
     const [ estimateData, setEstimateData ] = useState({client:'', date:''})
+
+    async function saveEstimate(){
+        const data = {
+            cod:idEstimate,
+            client:estimateData.client,
+            date:estimateData.date,
+            discount:discount,
+            total_value:totalValue,
+            items:items
+        }
+        await API.post('save_estimate.php',data)
+    }
 
     async function addItem(){
         if(editingItem.name === ''){
@@ -50,15 +64,21 @@ export function Main(){
 
     async function generateFile(){
 
-        generatePDF(
-                    {   client:estimateData.client, 
-                        date:estimateData.date,
-                        // ...estimateData,
-                        id:idEstimate, 
-                        totalValue:totalValue, 
-                        discount:discount
-                    }
-                    ,items)
+        saveEstimate()
+
+        if(estimateData.client === ''){
+            window.alert("Digite o nome do cliente")
+        }else{
+            generatePDF(
+                {   client:estimateData.client, 
+                    date:estimateData.date,
+                    // ...estimateData,
+                    id:idEstimate, 
+                    totalValue:totalValue, 
+                    discount:discount
+                }
+                ,items)
+        }
 
     }
 
